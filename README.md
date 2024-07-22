@@ -1,5 +1,5 @@
 # ComfyUI-Florence-2
-The model addresses are as follows and support manual download to comfyui/models/florence
+The model addresses are as follows and support manual download to comfyui/models/florence/large(base,base-ft,large-ft,sd3)
 https://huggingface.co/microsoft/Florence-2-large
 https://huggingface.co/gokaygokay/Florence-2-SD3-Captioner
 
@@ -13,6 +13,3 @@ Thanks to original node developer spacepxl and model fine-tuning author gokaygok
 
 
 </details>
-
-TODO:
- - all-in-one CLIP masked conditioning node
