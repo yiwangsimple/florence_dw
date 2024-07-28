@@ -142,7 +142,7 @@ class LoadFlorence2Model:
             "base-ft": "microsoft/Florence-2-base-ft",
             "large": "microsoft/Florence-2-large",
             "large-ft": "microsoft/Florence-2-large-ft",
-            "sd3": "gokaygokay/Florence-2-SD3-Captioner"
+            "SD3-Captioner": "gokaygokay/Florence-2-SD3-Captioner"
         }
         
         model_path = os.path.join(florence_path, version)
