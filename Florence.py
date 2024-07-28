@@ -125,7 +125,7 @@ class LoadFlorence2Model:
     def INPUT_TYPES(s):
         return {
             "required": {
-                "version": (["base", "base-ft", "large", "large-ft", "sd3"],),
+                "version": (["base", "base-ft", "large", "large-ft", "SD3-Captioner"],),
             },
         }
     
