@@ -134,7 +134,7 @@ class LoadFlorence2Model:
     CATEGORY = "Florence2"
     
     def load(self, version):
-        florence_path = os.path.join(folder_paths.models_dir, "florence")
+        florence_path = os.path.join(folder_paths.models_dir, "florence2")
         os.makedirs(florence_path, exist_ok=True)
         
         model_repos = {
