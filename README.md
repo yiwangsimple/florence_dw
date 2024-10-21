@@ -1,5 +1,5 @@
 # ComfyUI-Florence-2
-The model addresses are as follows and support manual download to comfyui/models/florence/large(base,base-ft,large-ft,sd3)
+The model addresses are as follows and support manual download to comfyui/models/florence2/large(base,base-ft,large-ft,sd3)
 https://huggingface.co/microsoft/Florence-2-large
 https://huggingface.co/gokaygokay/Florence-2-SD3-Captioner
 
