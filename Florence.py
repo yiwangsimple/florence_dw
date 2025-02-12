@@ -125,7 +125,7 @@ class LoadFlorence2Model:
     def INPUT_TYPES(s):
         return {
             "required": {
-                "version": (["base", "base-ft", "large", "large-ft", "SD3-Captioner"],),
+                "version": (["base", "base-ft", "large", "large-ft", "SD3-Captioner", "large-promptgen", "base-promptgen", "cog-large"],),
             },
         }
     
@@ -142,7 +142,10 @@ class LoadFlorence2Model:
             "base-ft": "microsoft/Florence-2-base-ft",
             "large": "microsoft/Florence-2-large",
             "large-ft": "microsoft/Florence-2-large-ft",
-            "SD3-Captioner": "gokaygokay/Florence-2-SD3-Captioner"
+            "SD3-Captioner": "gokaygokay/Florence-2-SD3-Captioner",
+            "large-promptgen": "MiaoshouAI/Florence-2-large-PromptGen-v2.0",
+            "base-promptgen": "MiaoshouAI/Florence-2-base-PromptGen-v2.0",
+            "cog-large": "thwri/CogFlorence-2.1-Large"
         }
         
         model_path = os.path.join(florence_path, version)
@@ -157,18 +160,19 @@ class LoadFlorence2Model:
                 with patch("transformers.dynamic_module_utils.get_imports", fixed_get_imports):
                     self.model = AutoModelForCausalLM.from_pretrained(model_path, trust_remote_code=True)
                     self.processor = AutoProcessor.from_pretrained(model_path, trust_remote_code=True)
+                    self.version = version
             except Exception as e:
-                print(f"Error loading model {version}: {str(e)}")
-                print("Attempting to load tokenizer instead of processor...")
+                print(f"Error loading model with processor: {str(e)}")
+                print("Loading model without processor...")
                 try:
                     self.model = AutoModelForCausalLM.from_pretrained(model_path, trust_remote_code=True)
-                    self.processor = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
+                    self.processor = self.model.get_processor()
+                    self.version = version
                 except Exception as e:
-                    print(f"Error loading model or tokenizer: {str(e)}")
+                    print(f"Error loading model: {str(e)}")
                     raise
             
             self.model = self.model.to(self.device)
-            self.version = version
         
         return ({'model': self.model, 'processor': self.processor, 'version': self.version, 'device': self.device}, )
 
