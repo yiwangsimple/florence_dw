@@ -29,7 +29,9 @@ def fixed_get_imports(filename: str | os.PathLike) -> list[str]:
     if os.path.basename(filename) != "modeling_florence2.py":
         return get_imports(filename)
     imports = get_imports(filename)
-    imports.remove("flash_attn")
+    # 只在 flash_attn 存在时才移除
+    if "flash_attn" in imports:
+        imports.remove("flash_attn")
     return imports
 
 def fig_to_pil(fig):
@@ -158,15 +160,18 @@ class LoadFlorence2Model:
         if self.version != version:
             try:
                 with patch("transformers.dynamic_module_utils.get_imports", fixed_get_imports):
-                    self.model = AutoModelForCausalLM.from_pretrained(model_path, trust_remote_code=True)
+                    # 先加载处理器，再加载模型
                     self.processor = AutoProcessor.from_pretrained(model_path, trust_remote_code=True)
+                    self.model = AutoModelForCausalLM.from_pretrained(model_path, trust_remote_code=True)
                     self.version = version
             except Exception as e:
                 print(f"Error loading model with processor: {str(e)}")
                 print("Loading model without processor...")
                 try:
+                    # 使用 tokenizer 作为备用处理器
                     self.model = AutoModelForCausalLM.from_pretrained(model_path, trust_remote_code=True)
-                    self.processor = self.model.get_processor()
+                    tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
+                    self.processor = tokenizer
                     self.version = version
                 except Exception as e:
                     print(f"Error loading model: {str(e)}")
